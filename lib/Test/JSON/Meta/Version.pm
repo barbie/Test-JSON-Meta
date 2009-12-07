@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 #----------------------------------------------------------------------------
 
@@ -90,7 +90,7 @@ my %definitions = (
   'conflicts'           => $module_map2,
 
   'optional_features'   => {
-    list        => {
+    'map'       => {
         ':key'  => { name => \&word,
             'map'   => { description        => { value => \&string },
                          requires_packages  => { value => \&string },
@@ -150,7 +150,7 @@ my %definitions = (
   'conflicts'           => $module_map2,
 
   'optional_features'   => {
-    list        => {
+    'map'       => {
         ':key'  => { name => \&word,
             'map'   => { description        => { value => \&string },
                          requires_packages  => { value => \&string },
@@ -217,6 +217,22 @@ my %definitions = (
   'recommends'          => $module_map1,
   'build_requires'      => $module_map1,
   'conflicts'           => $module_map2,
+
+  'optional_features'   => {
+    'map'       => {
+        ':key'  => { name => \&word,
+            'map'   => { description        => { value => \&string },
+                         requires_packages  => { value => \&string },
+                         requires_os        => { value => \&string },
+                         excludes_os        => { value => \&string },
+                         requires           => $module_map1,
+                         recommends         => $module_map1,
+                         build_requires     => $module_map1,
+                         conflicts          => $module_map2,
+            }
+        }
+     }
+  },
 
   'provides'    => {
     'map'       => { ':key' => { name  => \&module,
@@ -531,7 +547,7 @@ my $atom     = qr¬[a-z\d]¬i;
 my $domain   = qr¬((($atom(($atom|-)*$atom)?)\.)*([a-zA-Z](($atom|-)*$atom)?))¬;
 my $ip       = qr¬((\d+)(\.(\d+)){3})(:(\d+))?¬;
 my $enc      = qr¬%[a-fA-F\d]{2}¬;
-my $legal1   = qr¬[a-zA-Z\d\$\-_.+!*'(),]¬; #' - this comment is to avoid syntax highlighting issues
+my $legal1   = qr¬[a-zA-Z\d\$\-_.+!*'(),#]¬; #' - this comment is to avoid syntax highlighting issues
 my $legal2   = qr¬[;:@&=]¬;
 my $legal3   = qr¬((($legal1|$enc)|$legal2)*)¬;
 my $path     = qr¬\/$legal3(\/$legal3)*¬;
@@ -736,7 +752,7 @@ for Miss Barbell Productions, L<http://www.missbarbell.co.uk>
 
 =head1 COPYRIGHT AND LICENSE
 
-  Copyright (C) 2009 Barbie for Miss Barbell Productions
+  Copyright (C) 2009-2010 Barbie for Miss Barbell Productions
 
   This module is free software; you can redistribute it and/or
   modify it under the same terms as Perl itself.

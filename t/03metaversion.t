@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 
-use Test::More  tests => 87;
+use Test::More  tests => 88;
 use Test::JSON::Meta::Version;
 
 my $spec = Test::JSON::Meta::Version->new(spec => '1.3');
@@ -13,6 +13,8 @@ is($spec->url('url','test://'),0);
 is($spec->url('url','test^example^com'),0);
 is($spec->url('url',''),0);
 is($spec->url('url',undef),0);
+
+is($spec->url('url','http://www.gnu.org/licenses/#GPL'),1,'valid URL: http://www.gnu.org/licenses/#GPL');
 
 is($spec->urlspec('spec','http://module-build.sourceforge.net/META-spec-v1.3.html'),1,'valid specification URL');
 is($spec->urlspec('spec','http://module-build.sourceforge.net/META-spec-v1.2.html'),0);
