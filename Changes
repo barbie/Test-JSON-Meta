@@ -1,5 +1,9 @@
 # Changes log for Test-JSON-Meta
 
+0.03    12/12/2009
+	- clarified spec defined and user defined keys, as promoted by Kevin
+	  Ryde in RT#52685 (thanks Kevin).
+
 0.02    07/12/2009
 	- RT#46473: license url with fragment part (Kevin Ryde)
 	- RT#47393: "optional_features" as map rather than list (Kevin Ryde)

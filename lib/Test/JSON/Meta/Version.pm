@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 #----------------------------------------------------------------------------
 
@@ -530,6 +530,11 @@ keyword.
 Validates that key is in an acceptable format for the META.yml specification,
 i.e. any in the character class [-_a-z].
 
+For user defined keys, although not explicitly stated in the specifications 
+(v1.0 - v1.4), the convention is to precede the key with a pattern matching 
+qr{\Ax_}i. Following this any character from the character class [-_a-zA-Z]
+can be used. This clarification has been added to v2.0 of the specification.
+
 =item * module($self,$key,$value)
 
 Validates that a given key is in an acceptable module name format, e.g.
@@ -690,7 +695,8 @@ sub resource {
 sub word {
     my ($self,$key) = @_;
     if(defined $key) {
-        return 1    if($key && $key =~ /^([-_a-z]+)$/);
+        return 1    if($key && $key =~ /^([-_a-z]+)$/);     # spec defined
+        return 1    if($key && $key =~ /^x_([-_a-z]+)$/i);  # user defined
     } else {
         $key = '<undef>';
     }
