@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 #----------------------------------------------------------------------------
 
@@ -68,7 +68,87 @@ my $no_index_1_1 = {
     }
 };
 
+my $prereq_map = {
+    'map' => {
+        ':key' => {
+            name => \&phase,
+            'map' => {
+                ':key'  => {
+                    name => \&relation,
+                    'map' => { ':key' => { name => \&module, value => \&exversion } }
+                }
+            }
+        }
+    }
+};
+
 my %definitions = (
+  '2' => {
+    # REQUIRED
+    'abstract'            => { mandatory => 1, value => \&string  },
+    'author'              => { mandatory => 1, lazylist => { value => \&string } },
+    'dynamic_config'      => { mandatory => 1, value => \&boolean },
+    'generated_by'        => { mandatory => 1, value => \&string  },
+    'license'             => { mandatory => 1, lazylist => { value => \&license } },
+    'meta-spec' => {
+      mandatory => 1,
+      'map' => {
+        version => { mandatory => 1, value => \&version},
+        url     => { value => \&url }
+      }
+    },
+    'name'                => { mandatory => 1, value => \&string  },
+    'release_status'      => { mandatory => 1, value => \&release_status },
+    'version'             => { mandatory => 1, value => \&version },
+
+    # OPTIONAL
+    'description' => { value => \&string },
+    'keywords'    => { lazylist => { value => \&string } },
+    'no_index'    => $no_index_1_3,
+    'optional_features'   => {
+      'map'       => {
+        ':key' => { 
+          name  => \&identifier,
+          'map' => {
+            description => { value => \&string },
+            prereqs     => $prereq_map,
+          }
+        }
+      }
+    },
+    'prereqs' => $prereq_map,
+    'provides'    => {
+      'map'       => { 
+        ':key' => { 
+          name  => \&module,
+          'map' => { 
+            file    => { mandatory => 1, value => \&file },
+            version => { value => \&version } } } }
+    },
+    'resources'   => {
+      'map'       => { 
+        license    => { lazylist => { value => \&url } },
+        homepage   => { value => \&url },
+        bugtracker => { 
+          'map' => {
+            web     => { value => \&url },
+            mailto  => { value => \&string},
+          }},
+        repository => { 
+          'map' => {
+            web     => { value => \&url },
+            url     => { value => \&url },
+            type    => { value => \&string },
+          }},
+        ':key' => { value => \&string, name => \&custom_2 },
+      }
+    },
+
+    # CUSTOM -- additional user defined key/value pairs
+    # note we can only validate the key name, as the structure is user defined
+    ':key'        => { name => \&custom_2 },
+  },
+
 '1.4' => {
   'meta-spec'           => { mandatory => 1, 'map' => { version => { mandatory => 1, value => \&version},
                                                         url     => { mandatory => 1, value => \&urlspec } } },
@@ -360,7 +440,7 @@ sub parse {
     my $data = $self->{data};
 
     unless($self->{spec}) {
-        $self->{spec} = $data->{'meta-spec'} && $data->{'meta-spec'}->{'version'} ? $data->{'meta-spec'}->{'version'} : '1.0';
+        $self->{spec} = $data->{'meta-spec'} && $data->{'meta-spec'}->{'version'} ? $data->{'meta-spec'}->{'version'} : '2';
     }
 
     $self->check_map($definitions{$self->{spec}},$data);
@@ -381,6 +461,10 @@ sub errors {
 
 Checks whether a map (or hash) part of the data structure conforms to the
 appropriate specification definition.
+
+=item * check_lazylist($spec,$data)
+
+If it's a string, make it into a list and check the list
 
 =item * check_list($spec,$data)
 
@@ -419,6 +503,8 @@ sub check_map {
                 $spec->{$key}{value}->($self,$key,$data->{$key});
             } elsif($spec->{$key}{'map'}) {
                 $self->check_map($spec->{$key}{'map'},$data->{$key});
+            } elsif($spec->{$key}{'lazylist'}) {
+                $self->check_lazylist($spec->{$key}{'lazylist'},$data->{$key});
             } elsif($spec->{$key}{'list'}) {
                 $self->check_list($spec->{$key}{'list'},$data->{$key});
             }
@@ -429,6 +515,8 @@ sub check_map {
                 $spec->{':key'}{value}->($self,$key,$data->{$key});
             } elsif($spec->{':key'}{'map'}) {
                 $self->check_map($spec->{':key'}{'map'},$data->{$key});
+            } elsif($spec->{':key'}{'lazylist'}) {
+                $self->check_list($spec->{':key'}{'lazylist'},$data->{$key});
             } elsif($spec->{':key'}{'list'}) {
                 $self->check_list($spec->{':key'}{'list'},$data->{$key});
             }
@@ -439,6 +527,16 @@ sub check_map {
         }
         pop @{$self->{stack}};
     }
+}
+
+sub check_lazylist {
+    my ($self,$spec,$data) = @_;
+
+    if ( defined $data && ! ref($data) ) {
+      $data = [ $data ];
+    }
+
+    $self->check_list($spec,$data);
 }
 
 sub check_list {
@@ -465,7 +563,7 @@ sub check_list {
             $self->check_list($spec->{'list'},$value);
 
         } elsif ($spec->{':key'}) {
-            $self->check_map($spec,$value);
+           $self->check_map($spec,$value);
 
         } else {
             $self->_error( "Unknown value type, '$value', found in list structure" );
@@ -546,24 +644,45 @@ qr/[a-z][a-z_]/i.
 Validates that a given key is in an acceptable module name format, e.g.
 'Test::JSON::Meta::Version'.
 
+=item * release_status($self,$key,$value)
+
+Validates that the value for 'release_status' is set appropriately for one of
+'stable', 'testing' or 'unstable'.
+
+=item * custom_1($self,$key,$value)
+
+Validates custom keys based on camelcase only.
+
+=item * custom_2($self,$key,$value)
+
+Validates custom keys based on user defined (i.e. /^[xX]_/) only.
+
+=item * phase($self,$key,$value)
+
+Validates for a legal phase of a pre-requisite map.
+
+=item * relation($self,$key,$value)
+
+Validates for a legal relation, within a phase, of a pre-requisite map.
+
 =back
 
 =cut
 
-#my $protocol = qr!(?:http|https|ftp|afs|news|nntp|mid|cid|mailto|wais|prospero|telnet|gopher)!;
-my $protocol = qr!(?:ftp|http|https|git)!;
-my $badproto = qr!(\w+)://!;
-my $proto    = qr!$protocol://(?:[\w]+:\w+@)?!;
-my $atom     = qr![a-z\d]!i;
-my $domain   = qr!((($atom(($atom|-)*$atom)?)\.)*([a-zA-Z](($atom|-)*$atom)?))!;
-my $ip       = qr!((\d+)(\.(\d+)){3})(:(\d+))?!;
-my $enc      = qr!%[a-fA-F\d]{2}!;
-my $legal1   = qr|[a-zA-Z\d\$\-_.+!*\'(),#]|;
-my $legal2   = qr![;:@&=]!;
-my $legal3   = qr!((($legal1|$enc)|$legal2)*)!;
-my $path     = qr!\/$legal3(\/$legal3)*!;
-my $query    = qr!\?$legal3!;
-my $urlregex = qr!(($proto)?($domain|$ip)(($path)?($query)?)?)!;
+#my $protocol = qr{(?:http|https|ftp|afs|news|nntp|mid|cid|mailto|wais|prospero|telnet|gopher)};
+my $protocol = qr{(?:ftp|http|https|git)};
+my $badproto = qr{(\w+)://};
+my $proto    = qr{$protocol://(?:[\w]+:\w+@)?};
+my $atom     = qr{[a-z\d]}i;
+my $domain   = qr{((($atom(($atom|-)*$atom)?)\.)*([a-zA-Z](($atom|-)*$atom)?))};
+my $ip       = qr{((\d+)(\.(\d+)){3})(:(\d+))?};
+my $enc      = qr{%[a-fA-F\d]{2}};
+my $legal1   = qr{[a-zA-Z\d\$\-_.+!*'(),#]}; #' - this comment is to avoid syntax highlighting issues
+my $legal2   = qr{[;:@&=]};
+my $legal3   = qr{((($legal1|$enc)|$legal2)*)};
+my $path     = qr{\/$legal3(\/$legal3)*};
+my $query    = qr{\?$legal3};
+my $urlregex = qr{(($proto)?($domain|$ip)(($path)?($query)?)?)};
 
 sub url {
     my ($self,$key,$value) = @_;
@@ -655,7 +774,7 @@ sub boolean {
     return 0;
 }
 
-my %licenses = (
+my %v1_licenses = (
     'perl'         => 'http://dev.perl.org/licenses/',
     'gpl'          => 'http://www.opensource.org/licenses/gpl-license.php',
     'apache'       => 'http://apache.org/licenses/LICENSE-2.0',
@@ -673,15 +792,49 @@ my %licenses = (
     'unknown'      => undef,
 );
 
+my %v2_licenses = map { $_ => 1 } qw(
+  agpl_3
+  apache_1_1
+  apache_2_0
+  artistic_1
+  artistic_2
+  bsd
+  freebsd
+  gfdl_1_2
+  gfdl_1_3
+  gpl_1
+  gpl_2
+  gpl_3
+  lgpl_2_1
+  lgpl_3_0
+  mit
+  mozilla_1_0
+  mozilla_1_1
+  openssl
+  perl_5
+  qpl_1_0
+  ssleay
+  sun
+  zlib
+  open_source
+  restricted
+  unrestricted
+  unknown
+);
+
 sub license {
     my ($self,$key,$value) = @_;
+    my $licenses = $self->{spec} < 2 ? \%v1_licenses : \%v2_licenses;
     if(defined $value) {
-        return 1    if($value && exists $licenses{$value});
-        return 2    if($value);
+        return 1    if($value && exists $licenses->{$value});
+
+        # v1 specs caused problems for some with this field, 
+        # so this test is relaxed for v1 tests only.
+        return 2    if($value && $self->{spec} < 2);
     } else {
         $value = '<undef>';
     }
-    $self->_error( "License '$value' is unknown" );
+    $self->_error( "License '$value' is invalid" );
     return 0;
 }
 
@@ -729,6 +882,75 @@ sub module {
         $key = '<undef>';
     }
     $self->_error( "Key '$key' is not a legal module name." );
+    return 0;
+}
+
+sub release_status {
+  my ($self,$key,$value) = @_;
+  if(defined $value) {
+    my $version = $self->{data}{version} || '';
+    if ( $version =~ /_/ ) {
+      return 1 if ( $value =~ /\A(?:testing|unstable)\z/ );
+      $self->_error( "'$value' for '$key' is invalid for version '$version'" );
+    }
+    else {
+      return 1 if ( $value =~ /\A(?:stable|testing|unstable)\z/ );
+      $self->_error( "'$value' for '$key' is invalid" );
+    }
+  }
+  else {
+    $self->_error( "'$key' is not defined" );
+  }
+  return 0;
+}
+
+sub custom_1 {
+    my ($self,$key) = @_;
+    if(defined $key) {
+        # a valid user defined key should be alphabetic
+        # and contain at least one capital case letter.
+        return 1    if($key && $key =~ /^[a-z]+$/i && $key =~ /[A-Z]/);
+    } else {
+        $key = '<undef>';
+    }
+    $self->_error( "Custom resource '$key' must be in CamelCase." );
+    return 0;
+}
+
+sub custom_2 {
+    my ($self,$key) = @_;
+    if(defined $key) {
+        # a valid user defined key should be alphabetic
+        # and begin with x_ or X_
+        return 1    if($key && $key =~ /^x_([-_a-z]+)$/i);  # user defined
+    } else {
+        $key = '<undef>';
+    }
+    $self->_error( "Custom resource '$key' must begin with 'x_' or 'X_'." );
+    return 0;
+}
+
+my @valid_phases = qw/ configure build test runtime develop /;
+sub phase {
+    my ($self,$key) = @_;
+    if(defined $key) {
+        return 1 if( length $key && grep { $key eq $_ } @valid_phases );
+    } else {
+        $key = '<undef>';
+    }
+    $self->_error( "Key '$key' is not a legal phase." );
+    return 0;
+}
+
+my @valid_relations = qw/ requires recommends suggests conflicts /;
+sub relation {
+    my ($self,$key) = @_;
+    if(defined $key) {
+        return 1 if( length $key && grep { $key eq $_ } @valid_relations );
+    } else {
+        $key = '<undef>';
+    }
+    $self->_error( "Key '$key' is not a legal prereq relationship." );
     return 0;
 }
 
