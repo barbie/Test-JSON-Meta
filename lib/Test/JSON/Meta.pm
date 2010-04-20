@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.06';
+$VERSION = '0.07';
 
 #----------------------------------------------------------------------------
 
@@ -231,6 +231,6 @@ for Miss Barbell Productions, L<http://www.missbarbell.co.uk>
   Copyright (C) 2009-2010 Barbie for Miss Barbell Productions
 
   This module is free software; you can redistribute it and/or
-  modify it under the same terms as Perl itself.
+  modify it under the Artistic Licence v2.
 
 =cut

@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.06';
+$VERSION = '0.07';
 
 #----------------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ Validation of META.json data against the META.yml specification elements.
 #----------------------------------------------------------------------------
 
 #############################################################################
-#Specification Definitions													#
+#Specification Definitions                                                  #
 #############################################################################
 
 my %known_specs = (
@@ -381,7 +381,7 @@ my %definitions = (
 );
 
 #############################################################################
-#Code               														#
+#Code                                                                       #
 #############################################################################
 
 =head1 CLASS CONSTRUCTOR
@@ -503,10 +503,12 @@ sub check_map {
                 $spec->{$key}{value}->($self,$key,$data->{$key});
             } elsif($spec->{$key}{'map'}) {
                 $self->check_map($spec->{$key}{'map'},$data->{$key});
-            } elsif($spec->{$key}{'lazylist'}) {
-                $self->check_lazylist($spec->{$key}{'lazylist'},$data->{$key});
             } elsif($spec->{$key}{'list'}) {
                 $self->check_list($spec->{$key}{'list'},$data->{$key});
+            } elsif($spec->{$key}{'lazylist'}) {
+                $self->check_lazylist($spec->{$key}{'lazylist'},$data->{$key});
+            } else {
+                $self->_error( "Missing validation action in specification. Must be one of 'map', 'list', 'lazylist', or 'value' for '$key'." );
             }
 
         } elsif ($spec->{':key'}) {
@@ -515,12 +517,13 @@ sub check_map {
                 $spec->{':key'}{value}->($self,$key,$data->{$key});
             } elsif($spec->{':key'}{'map'}) {
                 $self->check_map($spec->{':key'}{'map'},$data->{$key});
-            } elsif($spec->{':key'}{'lazylist'}) {
-                $self->check_list($spec->{':key'}{'lazylist'},$data->{$key});
             } elsif($spec->{':key'}{'list'}) {
                 $self->check_list($spec->{':key'}{'list'},$data->{$key});
+            } elsif($spec->{':key'}{'lazylist'}) {
+                $self->check_list($spec->{':key'}{'lazylist'},$data->{$key});
+            } elsif(!$spec->{':key'}{name}) {
+                $self->_error( "Missing validation action in specification. Must be one of 'map', 'list', 'lazylist', 'name' or 'value' for ':key'." );
             }
-
 
         } else {
             $self->_error( "Unknown key, '$key', found in map structure" );
@@ -561,12 +564,14 @@ sub check_list {
             $self->check_map($spec->{'map'},$value);
         } elsif(defined $spec->{'list'}) {
             $self->check_list($spec->{'list'},$value);
+        } elsif(defined $spec->{'lazylist'}) {
+            $self->check_lazylist($spec->{'lazylist'},$value);
 
         } elsif ($spec->{':key'}) {
            $self->check_map($spec,$value);
 
         } else {
-            $self->_error( "Unknown value type, '$value', found in list structure" );
+            $self->_error( "Missing validation action in specification. Must be one of 'map', 'list', 'lazylist', 'value' or ':key' in the 'list' or 'lazylist' associated with '$self->{stack}[-2]'." );
         }
         pop @{$self->{stack}};
     }
@@ -672,7 +677,7 @@ Validates for a legal relation, within a phase, of a pre-requisite map.
 #my $protocol = qr{(?:http|https|ftp|afs|news|nntp|mid|cid|mailto|wais|prospero|telnet|gopher)};
 my $protocol = qr{(?:ftp|http|https|git)};
 my $badproto = qr{(\w+)://};
-my $proto    = qr{$protocol://(?:[\w]+:\w+@)?};
+my $proto    = qr{$protocol://(?:\w+:\w+@)?};
 my $atom     = qr{[a-z\d]}i;
 my $domain   = qr{((($atom(($atom|-)*$atom)?)\.)*([a-zA-Z](($atom|-)*$atom)?))};
 my $ip       = qr{((\d+)(\.(\d+)){3})(:(\d+))?};
@@ -1000,6 +1005,6 @@ for Miss Barbell Productions, L<http://www.missbarbell.co.uk>
   Copyright (C) 2009-2010 Barbie for Miss Barbell Productions
 
   This module is free software; you can redistribute it and/or
-  modify it under the same terms as Perl itself.
+  modify it under the Artistic Licence v2.
 
 =cut
