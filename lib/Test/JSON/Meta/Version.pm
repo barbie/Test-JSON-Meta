@@ -149,7 +149,7 @@ my %definitions = (
 
     # CUSTOM -- additional user defined key/value pairs
     # note we can only validate the key name, as the structure is user defined
-    ':key'        => { name => \&custom_2 },
+    ':key'        => { name => \&custom_2, value => \&anything },
   },
 
 '1.4' => {
@@ -210,7 +210,7 @@ my %definitions = (
 
   # additional user defined key/value pairs
   # note we can only validate the key name, as the structure is user defined
-  ':key'        => { name => \&keyword },
+  ':key'        => { name => \&keyword, value => \&anything },
 },
 
 '1.3' => {
@@ -270,7 +270,7 @@ my %definitions = (
 
   # additional user defined key/value pairs
   # note we can only validate the key name, as the structure is user defined
-  ':key'        => { name => \&keyword },
+  ':key'        => { name => \&keyword, value => \&anything },
 },
 
 # v1.2 is misleading, it seems to assume that a number of fields where created
@@ -334,7 +334,7 @@ my %definitions = (
 
   # additional user defined key/value pairs
   # note we can only validate the key name, as the structure is user defined
-  ':key'        => { name => \&keyword },
+  ':key'        => { name => \&keyword, value => \&anything },
 },
 
 # note that the 1.1 spec doesn't specify optional or mandatory fields, what
@@ -358,7 +358,7 @@ my %definitions = (
 
   # additional user defined key/value pairs
   # note we can only validate the key name, as the structure is user defined
-  ':key'        => { name => \&keyword },
+  ':key'        => { name => \&keyword, value => \&anything },
 },
 
 # note that the 1.0 spec doesn't specify optional or mandatory fields, what
@@ -379,7 +379,7 @@ my %definitions = (
 
   # additional user defined key/value pairs
   # note we can only validate the key name, as the structure is user defined
-  ':key'        => { name => \&keyword },
+  ':key'        => { name => \&keyword, value => \&anything },
 },
 );
 
