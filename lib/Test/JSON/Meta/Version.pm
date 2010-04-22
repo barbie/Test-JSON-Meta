@@ -862,8 +862,8 @@ sub resource {
 sub keyword {
     my ($self,$key) = @_;
     if(defined $key) {
-        return 1    if($key && $key =~ /^([-_a-z]+)$/);     # spec defined
-        return 1    if($key && $key =~ /^x_([-_a-z]+)$/i);  # user defined
+        return 1    if($key && $key =~ /^([a-z][-_a-z]*)$/);    # spec defined
+        return 1    if($key && $key =~ /^x_([a-z][-_a-z]*)$/i); # user defined
     } else {
         $key = '<undef>';
     }
@@ -930,7 +930,7 @@ sub custom_2 {
     if(defined $key) {
         # a valid user defined key should be alphabetic
         # and begin with x_ or X_
-        return 1    if($key && $key =~ /^x_([-_a-z]+)$/i);  # user defined
+        return 1    if($key && $key =~ /^x_([a-z][-_a-z]*)$/i); # user defined
     } else {
         $key = '<undef>';
     }
