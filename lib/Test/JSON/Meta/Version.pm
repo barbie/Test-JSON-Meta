@@ -38,6 +38,9 @@ Validation of META.json data against the META.yml specification elements.
 #Specification Definitions                                                  #
 #############################################################################
 
+my $spec_error = "Missing validation action in specification. "
+  . "Must be one of 'map', 'list', 'lazylist' or 'value'";
+
 my %known_specs = (
     '1.4' => 'http://module-build.sourceforge.net/META-spec-v1.4.html',
     '1.3' => 'http://module-build.sourceforge.net/META-spec-v1.3.html',
@@ -508,7 +511,7 @@ sub check_map {
             } elsif($spec->{$key}{'lazylist'}) {
                 $self->check_lazylist($spec->{$key}{'lazylist'},$data->{$key});
             } else {
-                $self->_error( "Missing validation action in specification. Must be one of 'map', 'list', 'lazylist', or 'value' for '$key'." );
+                $self->_error( "$spec_error for '$key'" );
             }
 
         } elsif ($spec->{':key'}) {
@@ -522,7 +525,7 @@ sub check_map {
             } elsif($spec->{':key'}{'lazylist'}) {
                 $self->check_list($spec->{':key'}{'lazylist'},$data->{$key});
             } elsif(!$spec->{':key'}{name}) {
-                $self->_error( "Missing validation action in specification. Must be one of 'map', 'list', 'lazylist', 'name' or 'value' for ':key'." );
+                $self->_error( "$spec_error for ':key'" );
             }
 
         } else {
@@ -571,7 +574,7 @@ sub check_list {
            $self->check_map($spec,$value);
 
         } else {
-            $self->_error( "Missing validation action in specification. Must be one of 'map', 'list', 'lazylist', 'value' or ':key' in the 'list' or 'lazylist' associated with '$self->{stack}[-2]'." );
+          $self->_error( "$spec_error associated with '$self->{stack}[-2]'" );
         }
         pop @{$self->{stack}};
     }
