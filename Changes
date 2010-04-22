@@ -1,5 +1,11 @@
 # Changes log for Test-JSON-Meta
 
+0.08    current
+	- simplified spec def error message (backported from CPAN-Meta).
+	- simplified spec using "value = \&anything", thus providing better
+	  structure (backported from CPAN-Meta).
+	- made keyword validation a little more strict.
+
 0.07    20/04/2010
 	- added spec definition validation.
 	- updated distribution META.json to version 2.

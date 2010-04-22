@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.07';
+$VERSION = '0.08';
 
 #----------------------------------------------------------------------------
 
@@ -673,6 +673,11 @@ Validates for a legal phase of a pre-requisite map.
 
 Validates for a legal relation, within a phase, of a pre-requisite map.
 
+=item * anything
+
+Usually reserved for user defined structures, allowing them to be considered 
+valid without a need for a specification definition for the structure.
+
 =back
 
 =cut
@@ -961,6 +966,8 @@ sub relation {
     $self->_error( "Key '$key' is not a legal prereq relationship." );
     return 0;
 }
+
+sub anything { return 1 }
 
 sub _error {
     my $self = shift;
