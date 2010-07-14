@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.07';
+$VERSION = '0.08';
 
 #----------------------------------------------------------------------------
 
@@ -969,7 +969,7 @@ sub _error {
     push @{$self->{errors}}, $mess;
 }
 
-q( Currently Listening To: Gary Numan - "This Wreckage" from 'Scarred');
+q( Currently Listening To: KMFDM - "WWIII" from 'WWIII');
 
 __END__
 
@@ -1002,7 +1002,7 @@ for Miss Barbell Productions, L<http://www.missbarbell.co.uk>
 
 =head1 COPYRIGHT AND LICENSE
 
-  Copyright (C) 2009-2010 Barbie for Miss Barbell Productions
+  Copyright (C) 2009,2010 Barbie for Miss Barbell Productions
 
   This module is free software; you can redistribute it and/or
   modify it under the Artistic Licence v2.
