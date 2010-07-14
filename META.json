@@ -22,7 +22,7 @@
         "runtime" : {
             "requires" : {
                 "IO::File": "0",
-                "JSON": "2.18",
+                "JSON": "2.15",
                 "Test::More": "0.62",
                 "Test::Builder": "0"
             }

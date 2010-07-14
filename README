@@ -19,7 +19,7 @@ DEPENDENCIES
 
 The distribution requires the following modules:
 
-  JSON                >= 2.18
+  JSON                >= 2.15
   Test::Builder       >= 0
 
 For testing purposes, the following modules are required:

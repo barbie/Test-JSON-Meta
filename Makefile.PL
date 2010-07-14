@@ -4,7 +4,7 @@ WriteMakefile(
     'VERSION_FROM'	=> 'lib/Test/JSON/Meta.pm',
     'PREREQ_PM'		=> {
         IO::File        => 0,
-		JSON	        => 2.18,
+		JSON	        => 2.15,
 		Test::Builder   => 0,
 		Test::More	    => 0.62,	# for testing
 	},
