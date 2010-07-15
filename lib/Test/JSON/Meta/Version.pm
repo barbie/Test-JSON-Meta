@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.08';
+$VERSION = '0.09';
 
 #----------------------------------------------------------------------------
 
@@ -73,15 +73,15 @@ my $no_index_1_1 = {
 
 my $prereq_map = {
     'map' => {
-        ':key' => {
-            name => \&phase,
-            'map' => {
-                ':key'  => {
-                    name => \&relation,
-                    'map' => { ':key' => { name => \&module, value => \&exversion } }
-                }
-            }
+      ':key' => {
+        name => \&phase,
+        'map' => {
+          ':key'  => {
+            name => \&relation,
+            %$module_map1
+          }
         }
+      }
     }
 };
 
@@ -673,7 +673,7 @@ Validates for a legal phase of a pre-requisite map.
 
 Validates for a legal relation, within a phase, of a pre-requisite map.
 
-=item * anything
+=item * anything($self,$key,$value)
 
 Usually reserved for user defined structures, allowing them to be considered 
 valid without a need for a specification definition for the structure.
@@ -979,7 +979,7 @@ sub _error {
     push @{$self->{errors}}, $mess;
 }
 
-q( Currently Listening To: Gary Numan - "This Wreckage" from 'Scarred');
+q( Currently Listening To: KMFDM - "WWIII" from 'WWIII');
 
 __END__
 
@@ -1012,7 +1012,7 @@ for Miss Barbell Productions, L<http://www.missbarbell.co.uk>
 
 =head1 COPYRIGHT AND LICENSE
 
-  Copyright (C) 2009-2010 Barbie for Miss Barbell Productions
+  Copyright (C) 2009,2010 Barbie for Miss Barbell Productions
 
   This module is free software; you can redistribute it and/or
   modify it under the Artistic Licence v2.

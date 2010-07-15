@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.08';
+$VERSION = '0.09';
 
 #----------------------------------------------------------------------------
 
@@ -168,7 +168,7 @@ sub _readdata {
     return decode_json($data);
 }
 
-q( Currently Listening To: Joy Division - "Atmosphere" from 'Heart And Soul');
+q( Currently Listening To: Joy Division - "Isolation" from 'Heart And Soul');
 
 __END__
 
@@ -228,7 +228,7 @@ for Miss Barbell Productions, L<http://www.missbarbell.co.uk>
 
 =head1 COPYRIGHT AND LICENSE
 
-  Copyright (C) 2009-2010 Barbie for Miss Barbell Productions
+  Copyright (C) 2009,2010 Barbie for Miss Barbell Productions
 
   This module is free software; you can redistribute it and/or
   modify it under the Artistic Licence v2.
