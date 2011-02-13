@@ -1,5 +1,9 @@
 # Changes log for Test-JSON-Meta
 
+0.10    13/02/2011
+        - Distribution name chang: Test-JSON-Meta => Test-CPAN-Meta-JSON.
+	- This distribution now a wrapper around Test-CPAN-Meta-JSON.
+
 0.09    15/07/2010
         - simplified spec def error message (backported from CPAN-Meta).
         - simplified spec using "value = \&anything", thus providing better

@@ -1,13 +1,11 @@
-Artistic
 Changes
 examples/examples.txt
 examples/96metatest.t
 INSTALL
 LICENSE
 lib/Test/JSON/Meta.pm
-lib/Test/JSON/Meta/Version.pm
 Makefile.PL
-MANIFEST			This list of files
+MANIFEST
 META.json
 META.yml
 README
