@@ -1,5 +1,8 @@
 # Changes log for Test-JSON-Meta
 
+0.11    14/02/2011
+	- removed tests which are no longer applicable.
+
 0.10    13/02/2011
         - Distribution name chang: Test-JSON-Meta => Test-CPAN-Meta-JSON.
 	- This distribution now a wrapper around Test-CPAN-Meta-JSON.
