@@ -1,7 +1,7 @@
 {
     "name": "Test-JSON-Meta",
     "version": "0.11",
-    "abstract": "A test module to validate a CPAN META.json file.",
+    "abstract": "A test module to validate a CPAN META.json file",
     "author": ["Barbie <barbie@cpan.org>"],
 
     "license": "artistic_2",
@@ -21,19 +21,20 @@
     "prereqs" : {
         "runtime" : {
             "requires" : {
-                "Test::More": "0.62",
+                "perl": "5.006",
                 "Test::CPAN::Meta::JSON": "0.10"
             }
         },
         "test" : {
             "requires": {
-                "Test::More": "0.62"
+                "IO::File": "0",
+                "Test::More": "0.70"
             },
             "recommends": {
-                "Test::More": "0.70",
+                "Test::CPAN::Meta": "0",
+                "Test::CPAN::Meta::JSON": "0",
                 "Test::Pod": "1.00",
-                "Test::Pod::Coverage": "0.08",
-                "Test::CPAN::Meta": "0.13"
+                "Test::Pod::Coverage": "0.08"
             }
         }
     },
@@ -49,7 +50,7 @@
     },
 
     "resources": {
-        "license": "http://dev.perl.org/licenses/",
+        "license": "http://www.perlfoundation.org/artistic_license_2_0",
         "bugtracker": { "web": "http://rt.cpan.org/Public/Dist/Display.html?Name=Test-JSON-Meta" },
         "repository": {
             "url": "git://github.com/barbie/Test-JSON-Meta.git",

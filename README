@@ -1,5 +1,5 @@
-Test::JSON::Meta
-================
+Test-JSON-Meta
+==============
 
 NOTICE
 
@@ -24,18 +24,19 @@ DEPENDENCIES
 
 The distribution requires the following modules:
 
-  Test::CPAN::Meta::JSON	>= 0.10
+  Test::CPAN::Meta::JSON
 
 For testing purposes, the following modules are required:
 
-  Test::More			>= 0.62
+  IO::File
+  Test::More
 
 For testing purposes, the following modules are desireable, but not essential:
 
-  Test::More			>= 0.70
-  Test::Pod			>= 1.00
-  Test::Pod::Coverage		>= 0.08
-  Pod::Coverage
+  Test::CPAN::Meta
+  Test::CPAN::Meta::JSON
+  Test::Pod
+  Test::Pod::Coverage
 
 INSTALLATION
 
@@ -65,16 +66,8 @@ RT system (http://rt.cpan.org/Public/Dist/Display.html?Name=Test-JSON-Meta).
 However, it would help greatly if you are able to pinpoint problems or even 
 supply a patch. 
 
-Fixes are dependant upon their severity and my availablity. Should a fix not
+Fixes are dependent upon their severity and my availability. Should a fix not
 be forthcoming, please feel free to (politely) remind me.
-
-DSLIP
-
-  b - Beta testing
-  d - Developer
-  p - Perl-only
-  O - Object oriented
-  p - Standard-Perl: user may choose between GPL and Artistic
 
 AUTHOR
 
@@ -83,7 +76,7 @@ for Miss Barbell Productions http://www.missbarbell.co.uk.
 
 COPYRIGHT AND LICENSE
 
-  Copyright (C) 2009-2011 Barbie for Miss Barbell Productions
+  Copyright (C) 2009-2013 Barbie for Miss Barbell Productions
 
-  This module is free software; you can redistribute it and/or
+  This distribution is free software; you can redistribute it and/or
   modify it under the Artistic Licence v2.

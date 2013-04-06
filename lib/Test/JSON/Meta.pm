@@ -6,13 +6,9 @@ use strict;
 use vars qw($VERSION);
 $VERSION = '0.11';
 
-#############################################################################
-#Library Modules															#
-#############################################################################
-
 use base 'Test::CPAN::Meta::JSON';
 
-q( Currently Listening To: Paul Menel - "Walk In My Shoes" from 'Three Sides To Every Story');
+q( "Before software can be reusable it first has to be usable." - Ralph Johnson );
 
 __END__
 
@@ -40,20 +36,12 @@ RT system (http://rt.cpan.org/Public/Dist/Display.html?Name=Test-JSON-Meta).
 However, it would help greatly if you are able to pinpoint problems or even
 supply a patch.
 
-Fixes are dependant upon their severity and my availablity. Should a fix not
+Fixes are dependent upon their severity and my availability. Should a fix not
 be forthcoming, please feel free to (politely) remind me.
 
 =head1 SEE ALSO
 
 L<Test::CPAN::Meta::JSON>.
-
-=head1 DSLIP
-
-  b - Beta testing
-  d - Developer
-  p - Perl-only
-  O - Object oriented
-  p - Standard-Perl: user may choose between GPL and Artistic
 
 =head1 AUTHOR
 
@@ -62,9 +50,9 @@ for Miss Barbell Productions, L<http://www.missbarbell.co.uk>
 
 =head1 COPYRIGHT AND LICENSE
 
-  Copyright (C) 2009-2011 Barbie for Miss Barbell Productions
+  Copyright (C) 2009-2013 Barbie for Miss Barbell Productions
 
-  This module is free software; you can redistribute it and/or
+  This distribution is free software; you can redistribute it and/or
   modify it under the Artistic Licence v2.
 
 =cut
