@@ -1,5 +1,6 @@
 # Changes log for Test-JSON-Meta
 
+0.12    2013-04-07
         - change file dates changed to meet W3CDTF standards.
         - reworked Makefile.PL for clarity.
         - updated test suite.
