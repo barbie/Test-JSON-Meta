@@ -14,8 +14,8 @@ plan 'no_plan';
 
 my $meta = meta_spec_ok(undef,undef,@_);
 
-use Test::JSON::Meta;                           # enter your module name here
-my $version = $Test::JSON::Meta::VERSION;       # enter your module name here
+use MyDistro;                           # enter your module name here
+my $version = $MyDistro::VERSION;       # enter your module name here
 
 is($meta->{version},$version,
     'META.json distribution version matches');
@@ -23,6 +23,14 @@ is($meta->{version},$version,
 if($meta->{provides}) {
     for my $mod (keys %{$meta->{provides}}) {
         is($meta->{provides}{$mod}{version},$version,
-            "META.json entry [$mod] version matches");
+            "META.json entry [$mod] version matches distribution version");
+
+        eval "require $mod";
+        my $VERSION = '$' . $mod . '::VERSION';
+        my $v = eval "$VERSION";
+        is($meta->{provides}{$mod}{version},$v,
+            "META.json entry [$mod] version matches module version");
+
+        isnt($meta->{provides}{$mod}{version},0);
     }
 }

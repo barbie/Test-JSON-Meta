@@ -3,6 +3,7 @@ Changes log for Test-JSON-Meta
 
         - documentation updates.
         - consistent abstract.
+        - extended META test suite.
 
 0.12    2013-04-07
         - change file dates changed to meet W3CDTF standards.

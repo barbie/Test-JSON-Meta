@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 use strict;
 
-use Test::More;
 use IO::File;
+use Test::More;
 
 # Skip if doing a regular install
 plan skip_all => "Author tests not required for installation"
