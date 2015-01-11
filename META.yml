@@ -1,7 +1,7 @@
 --- #YAML:1.0
 name:                     Test-JSON-Meta
 version:                  0.12
-abstract:                 A test module to validate a CPAN META.json file
+abstract:                 Validate your CPAN META.json files
 author:
   - Barbie <barbie@cpan.org>
 

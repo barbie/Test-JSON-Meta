@@ -10,7 +10,7 @@ WriteMakefile(
     AUTHOR              => 'Barbie <barbie@cpan.org>',
     NAME                => 'Test::JSON::Meta',
     VERSION_FROM        => 'lib/Test/JSON/Meta.pm',
-    ABSTRACT            => 'A test module to validate a CPAN META.json file',
+    ABSTRACT            => 'Validate your CPAN META.json files',
     NO_META             => 1,
     PREREQ_PM => {
 

@@ -16,7 +16,7 @@ __END__
 
 =head1 NAME
 
-Test::JSON::Meta - Validation of the META.json file in a CPAN distribution.
+Test::JSON::Meta - Validate your CPAN META.json files.
 
 =head1 DESCRIPTION
 
