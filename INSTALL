@@ -6,22 +6,27 @@ The instructions are basically as per any Perl module.
 INSTALLING AUTOMATICALLY
 ------------------------
 
-The easiest way to install is via CPAN or CPANPLUS:
+The easiest way to install is via CPAN, CPANPLUS or cpanminus:
 
 CPAN:
 
     % perl -MCPAN -e shell                    [as root]
-    > install Test-JSON-Meta
+    > install Test::JSON::Meta
     > quit
 
 CPANPLUS:
 
     % cpanp
-    > i Test-JSON-Meta
+    > i Test::JSON::Meta
     > q
 
-See your local 'perldoc CPAN' or 'perldoc CPANPLUS' for
-instructions on setting up and configuring CPAN or CPANPLUS.
+cpanminus:
+
+    % cpanm Test::JSON::Meta
+
+See your local documentation ('perldoc CPAN', 'perldoc CPANPLUS' or 
+'perldoc cpanm') for further instructions on setting up and configuring your
+chosen installer.
 
 
 OBTAINING THE MODULE
