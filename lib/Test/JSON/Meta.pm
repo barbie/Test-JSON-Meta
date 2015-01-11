@@ -27,6 +27,11 @@ that distribution for further details.
 
 A test module to validate a CPAN META.json file.
 
+=head1 WARNING
+
+This distribution will be retired at the end of 2015. Please replace your 
+references to this module with L<Test::CPAN::Meta::JSON>.
+
 =head1 BUGS, PATCHES & FIXES
 
 There are no known bugs at the time of this release. However, if you spot a

@@ -5,6 +5,11 @@ NOTICE
 
 Please note that this distribution has now been replaced by Test-CPAN-Meta-JSON.
 
+WARNING
+
+This distribution will be retired at the end of 2015. Please replace your 
+references to this module with L<Test::CPAN::Meta::JSON>.
+
 DESCRIPTION
 
 Validation of the META.json file in a CPAN distribution.
