@@ -1,6 +1,8 @@
 Changes log for Test-JSON-Meta
 ==============================
 
+        - META marked distribution as deprecated.
+
 0.13    2015-01-16
         - documentation updates.
         - consistent abstract.
